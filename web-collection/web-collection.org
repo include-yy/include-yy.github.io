@@ -1,34 +1,35 @@
 一些网站收藏
 * 通用内容
-https://github.com/include-yy/include-yy.github.io/blob/master/web-collection/src/html/algorithm.html
+https://include-yy.github.io/web-collection/src/html/general.html
 
 * C 语言
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/c.html
+https://include-yy.github.io/web-collection/src/html/c.html
 
 * scheme 
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/scheme.html
+https://include-yy.github.io/web-collection/src/html/scheme.html
 
 * perl 
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/perl.html
+https://include-yy.github.io/web-collection/src/html/perl.html
 
 * 数据结构算法相关
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/allgorithm.html
+https://include-yy.github.io/web-collection/src/html/algorithm.html
 
 * emacs 
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/emacs.html
+https://include-yy.github.io/web-collection/src/html/emacs.html
 
 * 数学相关
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/math.html
+https://include-yy.github.io/web-collection/src/html/math.html
 
 * 操作系统相关
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/os.html
+https://include-yy.github.io/web-collection/src/html/os.html
 
 * 他人的博客或网站
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/person.html
+https://include-yy.github.io/web-collection/src/html/person.html
 
 * 一些工具指南
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/tools.html
+https://include-yy.github.io/web-collection/src/html/tools.html
 
 * 其他东西
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/other.html
+https://include-yy.github.io/web-collection/src/html/other.html
+
 

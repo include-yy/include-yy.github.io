@@ -1,6 +1,6 @@
 一些网站收藏
 * 通用内容
-https://github.com/include-yy/include-yy.github.io/web-collection/src/html/general.html
+https://github.com/include-yy/include-yy.github.io/blob/master/web-collection/src/html/algorithm.html
 
 * C 语言
 https://github.com/include-yy/include-yy.github.io/web-collection/src/html/c.html

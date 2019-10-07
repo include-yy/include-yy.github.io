@@ -1,5 +1,5 @@
 * 这里是 include-yy 的博客
 https://include-yy.github.io
 * 这是他的一些收藏
-https://github.com/include-yy/include-yy.github.io/web-collection/web-collection.html
+https://include-yy.github.io/web-collection/web-collection.html
 * 下面是他写的一点东西（现在还没有）

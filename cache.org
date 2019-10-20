@@ -1,0 +1,2 @@
+Projecteuler 301: https://www.xuebuyuan.com/1106597.html
+glut : https://user.xmission.com/~nate/glut.html

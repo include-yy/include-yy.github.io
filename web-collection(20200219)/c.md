@@ -1,4 +1,4 @@
-* C
+
 Linux学习书籍推荐 : https://www.cnblogs.com/notepi/archive/2013/06/15/3137103.html
 
 为什么说 goto 没有用 : https://www.cnblogs.com/shiningWish/p/6130488.html

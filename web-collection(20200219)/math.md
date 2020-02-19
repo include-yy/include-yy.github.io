@@ -1,4 +1,3 @@
-* math
 The Prime Glossary : https://primes.utm.edu/glossary/home.php
 
 Full Reptend Prime : http://mathworld.wolfram.com/FullReptendPrime.html

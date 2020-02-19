@@ -1,4 +1,3 @@
-* 算法
 伪随机数算法 : https://www.cnblogs.com/forget406/p/5294143.html
 
 伪随机数生成算法 : https://www.cnblogs.com/shine-lee/p/9516757.html
@@ -26,4 +25,3 @@ Backtracking : https://en.wikipedia.org/wiki/Backtracking
 深度优先搜索 : https://zh.wikipedia.org/wiki/深度优先搜索
 
 正则引擎 : https://blog.csdn.net/kingoverthecloud/article/details/41621557
-

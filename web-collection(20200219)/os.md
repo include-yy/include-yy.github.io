@@ -1,4 +1,4 @@
-* 操作系统
+
 FreeBSD下使用无线网卡ndis(windows网卡驱动)驱动 : http://m.blog.chinaunix.net/uid-736168-id-375999.html?tdsourcetag=s_pcqq_aiomsg
 
 FreeBSD如何列出目录内容 : http://m.pc811.com/6/1/26160.html?tdsourcetag=s_pcqq_aiomsg

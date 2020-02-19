@@ -1,4 +1,4 @@
-* scheme
+
 Guile官方网站 : http://www.gnu.org/software/guile/
 
 Racket官方网站 : https://www.racket-lang.org/

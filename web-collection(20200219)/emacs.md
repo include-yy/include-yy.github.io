@@ -1,4 +1,4 @@
-* emacs & vim & editors
+
 Yin Wang's Introduction : https://docs.huihoo.com/homepage/shredderyin/emacs.html
 
 Emacs和Vim：神的编辑器和编辑器之神 : http://os.51cto.com/art/201101/242518.htm

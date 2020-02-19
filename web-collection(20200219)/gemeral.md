@@ -1,4 +1,4 @@
-* 编程通用知识
+
 每个程序员都应该了解的内存知识 : https://www.oschina.net/translate/what-every-programmer-should-know-about-memory-part1?print
 
 写一手漂亮的伪代码 : https://blog.csdn.net/lancecrazy/article/details/81060831
@@ -27,7 +27,7 @@ C++还能重新辉煌吗？C++复杂性的思考 :  https://blog.csdn.net/gogdiz
 
 厉害的程序员到底用不用 IDE，如果不用，为什么？ : http://3g.163.com/dy/article/DRBLF3JD0520IVJD.html
 
-Brain F**k : https://www.jianshu.com/p/4abeda905abe
+Brain F\*\*k : https://www.jianshu.com/p/4abeda905abe
 
 大家有没有想过类型推导这回事？ : https://bbs.csdn.net/topics/30274468
 

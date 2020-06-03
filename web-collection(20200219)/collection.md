@@ -64,7 +64,7 @@ Addition Chain 加法链 https://www.luogu.com.cn/blog/mohei0/addition-chains-ti
 
 C++的一大误区——深入解释直接初始化与复制初始化的区别 https://blog.csdn.net/ljianhui/article/details/9245661
 
-_T、_TEXT、L、TEXT之间的区别 https://www.cnblogs.com/lanhaicode/p/10661428.html
+\_T、\_TEXT、L、TEXT之间的区别 https://www.cnblogs.com/lanhaicode/p/10661428.html
 
 Linux下so动态库查看与运行时搜索路径的设置 https://blog.csdn.net/renwotao2009/article/details/51398739
 

@@ -1,7 +1,3 @@
-在正式开始介绍控制台应用之前，先看看什么是控制台和终端。
-
-以下是科普时间。
-
 # 什么是 console，terminal
 
 ## console（控制台）
@@ -17,6 +13,8 @@
 早期的终端价格并不昂贵，但是相比打孔卡（[punched cards](https://en.wikipedia.org/wiki/Punched_card "Punched card")）和打孔带（[paper tape](https://en.wikipedia.org/wiki/Paper_tape)）而言速度很慢。但随着技术的进步和显示设备（[video displays](https://en.wikipedia.org/wiki/Video_display "Video display")）的引入，终端将这些交互形式挤出了工业界。与终端相关的是分时系统（[timesharing](https://en.wikipedia.org/wiki/Timesharing "Timesharing")）的发展，它与终端共同发展，能够支持多个用户通过多个终端使用一台机器，从而弥补了用户低效的输入能力。
 
 终端的功能被限制在输入和显示数据；具有显著本地可编程或数据处理能力的设备可称为“智能终端”或胖客户端（[fat client](https://en.wikipedia.org/wiki/Fat_client "Fat client")）。依赖于主机（host computer）处理能力的终端被称为“哑终端”或瘦终端（[thin client](https://en.wikipedia.org/wiki/Thin_client "Thin client")）。个人电脑可以通过运行终端模拟器来复现终端的功能，这些终端模拟器可能允许并发运行本地程序和访问非本地终端主机系统。
+
+由此可见，终端的功能很单一，那就是管理输入和输出。
 
 ## 两者的关联和区别是什么
 
@@ -52,7 +50,7 @@
 
 ### 什么是 Shell ，以及它与终端模拟器的关系
 
-[shell](http://en.wikipedia.org/wiki/Shell_%28computing%29) 是用户登入系统时的初始界面。在 Unix 圈子中，shell 特指命令行 shell（[command-line shell](http://en.wikipedia.org/wiki/Shell_%28computing%29#Text_.28CLI.29_shells)），输入想要启动的应用名称，后面跟着应用程序执行的文件或其他对象的名称，然后按下 Enter 键。其他类型的环境通常不使用 shell 这个词，例如， windows 系统使用 "window manager" 和 "desktop environment"，而不是 "shell“。
+[shell](http://en.wikipedia.org/wiki/Shell_%28computing%29) 是用户登入系统时的**初始界面**。在 Unix 圈子中，shell 特指命令行 shell（[command-line shell](http://en.wikipedia.org/wiki/Shell_%28computing%29#Text_.28CLI.29_shells)），输入想要启动的应用名称，后面跟着应用程序执行的文件或其他对象的名称，然后按下 Enter 键。其他类型的环境通常不使用 shell 这个词，例如， windows 系统使用 "window manager" 和 "desktop environment"，而不是 "shell“。
 
 存在着各种各样的 Unix shell。Ubuntu 的默认 shell 是 [Bash](http://en.wikipedia.org/wiki/Bash_(Unix_shell)（和大多数 Linux 发行版一样）。其他比较流行的比如 [zsh](http://en.wikipedia.org/wiki/Zsh) （强调功能和个性化）和 [fish](http://en.wikipedia.org/wiki/Friendly_interactive_shell) （强调简便性）。
 
@@ -76,13 +74,7 @@
 
 对于 shell 和终端的区别的描述来自【3】。
 
-shell 指的是一个界面，而不局限于命令行。从上述内容来看，用户与命令行 shell 的沟通是需要终端模拟器的参与的。输入经过终端模拟器到达 shell，shell 输出的显示、排版和字体颜色由终端模拟器负责。
-
-根据：（来源：【3】 中的某个回答）
-
-> **Terminal** is a program that `run` a **shell** 
-
-我们至少可以这样说：shell 运行在终端模拟器中。
+shell 指的是一个界面，而不局限于命令行。从上述内容来看，在桌面环境中，用户与命令行 shell 的沟通是需要终端模拟器的**参与**的。输入经过终端模拟器到达 shell，shell 的输出的显示、排版和字体颜色由终端模拟器负责。
 
 # Windows 中的控制台
 
@@ -96,17 +88,17 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 一个进程可以通过以下方法来创建一个新的控制台：
 
-- 一个 GUI 或控制台进程可以使用 [**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) （使用 CREATE\_NEW\_CONSOLE）来创建一个使用新的控制台的控制台进程。（默认情况下，控制台进程会继承它的父进程的控制台，而且不能保证输入是由所认为的进程接收的）
+- 一个 GUI 或控制台进程可以使用 [**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) （使用 **CREATE\_NEW\_CONSOLE**）来创建一个使用新控制台的控制台进程。（默认情况下，控制台进程会继承它的父进程的控制台，而且不能保证输入是由所认为的进程接收的）
 
-- 没有附加到控制台的 GUI 或控制台进程可以使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 来创建一个新的控制台。（GUI 进程在创建时没有附加到一个控制台。如果使用[**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) （使用 DETACHED\_PROCESS） 创建，控制台进程就不会附加到一个控制台。
+- 没有附加到控制台的 GUI 或控制台进程可以使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 来创建一个新的控制台。（GUI 进程在创建时没有附加到控制台。如果使用[**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) （使用 **DETACHED\_PROCESS**） 创建，控制台进程就不会附加到一个控制台。
 
-一般而言，当错误出现，且需要与用户进行交互时，进程会使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 来创建一个控制台。例如，一个 GUI 进程可以在错误出现时创建一个控制台，来避免使用图形界面。或者，一个一般不与用户交互的控制台进程可以创建一个控制台来显示错误。
+一般而言，当出现错误且需要与用户进行交互时，进程会使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 来创建一个控制台。例如，一个 GUI 进程可以在错误出现时创建一个控制台，来避免使用它自己的图形界面。或者，一个一般不与用户交互的控制台进程可以创建一个控制台来显示错误。
 
-通过在 [**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) 中使用 CREATE\_NEW\_CONSOLE 标志可以创建一个控制台。这种方法创建了一个可由子进程访问，但不能由父进程访问的控制台。分离的控制台允许子进程和父进程在没有矛盾的情况下与用户交互。如果在创建控制台进程时没有指定标志，进程都会附加到同样的控制台，这样就不能保证你所倾向的那个进程会接收到输入。应用可以通过创建不继承输出缓冲区句柄的子进程来避免混乱，或者在一定时间内只允许子进程继承输入缓冲区句柄，而不允许父进程从控制台输入中进行读入，直到子进程完成工作。
+通过在 [**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) 中使用 **CREATE\_NEW\_CONSOLE** 标志可以创建一个控制台。这种方法创建了一个可由子进程访问，但不能由父进程访问的控制台。分离的控制台允许子进程和父进程在没有矛盾的情况下与用户交互。如果在创建控制台进程时没有指定标志，进程都会附加到同样的控制台，这样就不能保证你所倾向的那个进程会接收到输入。应用可以通过创建不继承输出缓冲区句柄的子进程来避免混乱，或者在一定时间内只允许子进程继承输入缓冲区句柄，而不允许父进程从控制台输入中进行读入，直到子进程完成工作。
 
 创建一个控制台会得到一个新的控制台窗口，和分离的 I/O 屏幕缓冲区。与新控制台关联的进程可使用 [**GetStdHandle**](https://docs.microsoft.com/en-us/windows/console/getstdhandle) 函数来取得新控制台的输入和屏幕缓冲区句柄。这些句柄允许进程对控制台进行访问。
 
-当一个进程使用了 [**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) ，它可以指定一个[**STARTUPINFO**](https://msdn.microsoft.com/library/windows/desktop/ms686331) 结构，该结构的成员对第一个为子进程创建的控制台起控制作用。 在对 CreateProcess 的调用中指定的 STARTUPINFO 结构会通过是否指定了 CREATE\_NEW\_CONSOLE 这个标志影响控制台的创建。如果子进程随后使用了 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) ，它也会对控制台的创建造成影响。以下控制台特性可以被指定：
+当一个进程使用 [**CreateProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682425) 时，它可以指定一个 [**STARTUPINFO**](https://msdn.microsoft.com/library/windows/desktop/ms686331) 结构，该结构的成员对第一个为子进程创建的控制台起控制作用。 在对 **CreateProcess** 的调用中指定的 **STARTUPINFO** 结构会通过是否指定了**CREATE\_NEW\_CONSOLE** 这个标志影响控制台的创建。如果子进程随后使用了 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) ，它也会对控制台的创建造成影响。以下的控制台特性可以被指定：
 
 - 新控制台的窗口大小，以字符为单位
 
@@ -118,7 +110,7 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 - 窗口标题栏名字的显示
 
-如果没有指定 [**STARTUPINFO**](https://msdn.microsoft.com/library/windows/desktop/ms686331) 结构的值，系统会使用默认值。子进程可以使用 [**GetStartupInfo**](https://msdn.microsoft.com/library/windows/desktop/ms683230) 函数来得到 STARTUPINFO 结构中的值。
+如果没有指定 [**STARTUPINFO**](https://msdn.microsoft.com/library/windows/desktop/ms686331) 结构中的值，系统会使用默认值。子进程可以使用 [**GetStartupInfo**](https://msdn.microsoft.com/library/windows/desktop/ms683230) 函数来得到 **STARTUPINFO** 结构中的值。
 
 进程不能改变它的控制台窗口在屏幕上的位置，但是下面的一些控制台函数可以设置或检索由 STARTUPINFO 中的其他性质。
 
@@ -132,7 +124,7 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 - [**SetConsoleTitle**](https://docs.microsoft.com/en-us/windows/console/setconsoletitle) ：设置控制台窗口标题
 
-- [**GetConsoleTitle**](https://docs.microsoft.com/en-us/windows/console/getconsoletitle) ：设置控制台窗口标题
+- [**GetConsoleTitle**](https://docs.microsoft.com/en-us/windows/console/getconsoletitle) ：获得控制台窗口标题
 
 进程可以使用 [**FreeConsole**](https://docs.microsoft.com/en-us/windows/console/freeconsole) 来将自己与继承的控制台或使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 创建的控制台分离。
 
@@ -144,7 +136,7 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 ## 控制台的关闭
 
-进程可以使用 [**FreeConsole**](https://docs.microsoft.com/en-us/windows/console/freeconsole) 来于它的控制台分离。如果有其他控制台在共享这个控制台，控制台不会被销毁，但已调用 FreeConsole 的进程不能再使用它。在调用 FreeConsole 后，进程可以使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 创建新的控制台或使用 [**AttachConsole**](https://docs.microsoft.com/en-us/windows/console/attachconsole) 来附加到另一个控制台。
+进程可以使用 [**FreeConsole**](https://docs.microsoft.com/en-us/windows/console/freeconsole) 来将它与它的控制台分离。如果有其他控制台在共享这个控制台，控制台不会被销毁，但已调用 **FreeConsole** 的进程不能再使用它。在调用 FreeConsole 后，进程可以使用 [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole) 创建新的控制台或使用 [**AttachConsole**](https://docs.microsoft.com/en-us/windows/console/attachconsole) 来附加到另一个控制台。
 
 当最后一个附加于它的进程终止或调用 FreeConsole 后，控制台会被关闭。
 
@@ -156,13 +148,13 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 由 [**GetStdHandle**](https://docs.microsoft.com/en-us/windows/console/getstdhandle) 返回的句柄值并不是 0，1 和 2，因此在 Stdio.h 中预定义的流常数（STDIN，STDOUT，STDERR）不能在需要控制台句柄的函数中使用。
 
-函数 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 语序进程获得指向控制台输入缓冲区和活跃屏幕缓冲区的句柄，即便 STDIN 和 STDOUT 已经被重定向了。要打开控制台输入缓冲区的句柄，需要在 CreateFile 调用中指定 `CONIN$` 值。在 CreateFile 中指定 `CONOUT$` 值来打开控制台的活跃屏幕句柄。CreateFile 允许指定对它返回句柄进行 读/写 访问。
+函数 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 允许进程获得指向控制台输入缓冲区和活跃屏幕缓冲区的句柄，即便 STDIN 和 STDOUT 已经被重定向了。要打开控制台输入缓冲区的句柄，需要在 **CreateFile** 调用中指定 `CONIN$` 值。在 **CreateFile** 中指定 `CONOUT$` 值来打开控制台的活跃屏幕句柄。**CreateFile** 允许指定对它返回句柄进行 读/写 访问。
 
-[**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 函数创建一个新的屏幕缓冲区并返回一个句柄。这个句柄可用于任何接收控制台输出句柄的函数。新的屏幕缓冲区不是活跃的，除非它在 [**SetConsoleActiveScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/setconsoleactivescreenbuffer) 的调用中被指定。注意到改变屏幕活跃缓冲区不会影响由 GetStdHandle 返回的句柄。相似地，使用 [**SetStdHandle**](https://docs.microsoft.com/en-us/windows/console/setstdhandle) 对 STDOUT 句柄的改变不会影响活跃屏幕缓冲区。
+[**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 函数创建一个新的屏幕缓冲区并返回一个句柄。这个句柄可用于任何接收控制台输出句柄的函数。新的屏幕缓冲区不是活跃的，除非它在 [**SetConsoleActiveScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/setconsoleactivescreenbuffer) 的调用中被指定。注意到改变屏幕活跃缓冲区不会影响由 **GetStdHandle** 返回的句柄。相似地，使用 [**SetStdHandle**](https://docs.microsoft.com/en-us/windows/console/setstdhandle) 对 STDOUT 句柄的改变不会影响活跃屏幕缓冲区。
 
-由 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 和 [**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 返回的控制台句柄可以用在任何需要控制台输入缓冲区句柄或控制台屏幕缓冲区句柄的函数中。如果标准句柄没有被重定向而指向不是控制台 I/O 的东西的话，由 [**GetStdHandle**](https://docs.microsoft.com/en-us/windows/console/getstdhandle) 返回的句柄可被控制台函数使用。然而，如果标准句柄被重定向而指向文件或管道，该句柄智能用在 [**ReadFile**](https://msdn.microsoft.com/library/windows/desktop/aa365467) 和 [**WriteFile**](https://msdn.microsoft.com/library/windows/desktop/aa365747) 中。
+由 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 和 [**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 返回的控制台句柄可以用在任何需要控制台输入缓冲区句柄或控制台屏幕缓冲区句柄的函数中。如果标准句柄没有被重定向而指向不是控制台 I/O 的东西的话，由 [**GetStdHandle**](https://docs.microsoft.com/en-us/windows/console/getstdhandle) 返回的句柄可被控制台函数使用。然而，如果标准句柄被重定向而指向文件或管道，该句柄只能用在 [**ReadFile**](https://msdn.microsoft.com/library/windows/desktop/aa365467) 和 [**WriteFile**](https://msdn.microsoft.com/library/windows/desktop/aa365747) 中。
 
-进程可以使用 [**DuplicateHandle**](https://msdn.microsoft.com/library/windows/desktop/ms724251) 函数创建一个复制的控制台句柄，与原句柄在访问级别或继承性存在不同。然而，注意，进程创建的复制控制台句柄只能供自己使用。这一点与其他种类的句柄不同（比如文件，管道，或互斥对象），使用 DuplicateHandle 产生的其他种类句柄的复制可以用于不同的进程。
+进程可以使用 [**DuplicateHandle**](https://msdn.microsoft.com/library/windows/desktop/ms724251) 函数创建一个复制的控制台句柄，它与原句柄在访问级别或继承性存在不同。然而，注意，进程创建的复制控制台句柄只能供自己使用。这一点与其他种类的句柄不同（比如文件，管道，或互斥对象），使用 **DuplicateHandle** 产生的其他种类句柄的复制可以用于不同的进程。
 
 要关闭控制台句柄，进程可以使用 [**CloseHandle**](https://msdn.microsoft.com/library/windows/desktop/ms724211) 函数。
 
@@ -170,17 +162,17 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 每个控制台都有一个包含一个输入事件记录队列的输入缓冲区。当控制台的窗口拥有键盘焦点时，控制台会将每个输入事件（比如单个击键，鼠标移动或鼠标单击）格式化为控制台输入缓冲区中的输入记录。
 
-应用可以通过使用高级控制台 I/O 函数（[high-level console I/O functions](https://docs.microsoft.com/en-us/windows/console/high-level-console-input-and-output-functions)）来对控制台输入缓冲区进行间接访问，或使用低级控制台 I/O 函数（[low-level console input functions](https://docs.microsoft.com/en-us/windows/console/low-level-console-input-functions)）进行直接访问。高级函数会对输入缓冲区中的数据进行处理，只返回输入字节流。低级函数允许应用直接读取输入记录，或将输入记录放入缓冲区。要打开一个控制台输入缓冲区句柄，需在 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 调用中指定 `CONIN$` 值。
+应用可以通过使用高级控制台 I/O 函数（[high-level console I/O functions](https://docs.microsoft.com/en-us/windows/console/high-level-console-input-and-output-functions)）来对控制台输入缓冲区进行间接访问，或使用低级控制台 I/O 函数（[low-level console input functions](https://docs.microsoft.com/en-us/windows/console/low-level-console-input-functions)）进行直接访问。高级函数会对输入缓冲区中的数据进行处理，只返回输入字节流。低级函数允许应用直接从输入缓冲区读取输入记录，或将输入记录放入缓冲区。要打开一个控制台输入缓冲区句柄，需在 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 调用中指定 `CONIN$` 值。
 
-输入记录（input record）是一个包含事件类型（键盘，鼠标，窗口大小改变，焦点，或菜单事件）和事件细节的结构。[**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 中的 EventType 成员指示了记录中包含的事件类型。
+输入记录（input record）是一个包含事件类型（键盘，鼠标，窗口大小改变，焦点，或菜单事件）和事件细节的结构。[**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 中的 **EventType** 成员指示了记录中包含的事件类型。
 
 控制台输入缓冲区中的焦点和菜单事件归系统内部使用，它们应该被应用忽略。
 
 ### 键盘事件
 
-键盘事件在任意按键被按下或释放时产生；这包括了控制键。然而，`ALT` 键在没有和其他字符组合时的按下和释放对系统有特殊意义，它不会被传递给应用。同样的，如果输入句柄为已处理模式（processed mode），`CTRL`+`C` 键组合也不会被传递。
+键盘事件在任意按键被按下或释放时产生；这包括了控制键。然而，`ALT` 键在没有和其他字符组合时的按下和释放对系统有特殊意义，它不会被传递给应用。同样的，如果输入句柄处于已处理模式（processed mode），`CTRL`+`C` 键组合也不会被传递。
 
-如果输入事件是一个击键，[**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 结构的 Event 成员会是一个包含以下信息的 [**KEY_EVENT_RECORD**](https://docs.microsoft.com/en-us/windows/console/key-event-record-str) 结构：
+如果输入事件是一个击键，[**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 结构的 **Event** 成员会是一个包含以下信息的 [**KEY_EVENT_RECORD**](https://docs.microsoft.com/en-us/windows/console/key-event-record-str) 结构：
 
 - 一个指示键是按下或释放的布尔值
 
@@ -202,9 +194,9 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 - 鼠标指针位于控制台窗口内
 
-如果输入事件是一个鼠标事件，那么 [**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 的 Event 成员是一个包含以下信息的 [**MOUSE_EVENT_RECORD**](https://docs.microsoft.com/en-us/windows/console/mouse-event-record-str) 结构：
+如果输入事件是一个鼠标事件，那么 [**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 的 **Event** 成员是一个包含以下信息的 [**MOUSE_EVENT_RECORD**](https://docs.microsoft.com/en-us/windows/console/mouse-event-record-str) 结构：
 
-- 鼠标指针的坐标，坐标以字符单元的高度和宽度为单位，在控制台屏幕缓冲区的坐标系统中
+- 鼠标指针的坐标，坐标以字符单元的高度和宽度为单位，以控制台屏幕缓冲区的坐标系统为基准
 
 - 指示鼠标状态的标志值
 
@@ -212,15 +204,15 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 - 指示事件是按下按键、释放事件、鼠标移动事件或双击事件的标志值
 
-注意，鼠标位置坐标根据的是控制台屏幕缓冲区，而不是控制台窗口。屏幕缓冲区可能已经被滚动，所以窗口的原点（最左上）可能不一定是控制台屏幕缓冲区的 (0, 0) 坐标。想要直到鼠标相对于窗口的坐标值，可将鼠标的位置坐标减去窗口原点坐标。使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 函数来得到窗口原点的坐标。
+**注意**，鼠标位置坐标根据的是控制台屏幕缓冲区，而不是控制台窗口。屏幕缓冲区可能已经被滚动，所以窗口的原点（最左上）可能不一定是控制台屏幕缓冲区的 (0, 0) 坐标。想要直到鼠标相对于窗口的坐标值，可将鼠标的位置坐标减去窗口原点坐标。使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 函数来得到窗口原点的坐标。
 
-[**MOUSE_EVENT_RECORD**](https://docs.microsoft.com/en-us/windows/console/mouse-event-record-str) 结构的 dwButtonState 成员有一比特对应于每次的鼠标按钮。如果按键按下，这一比特为 1，否则为 0。按键释放事件可由 **MOUSE_EVENT_RECORD** 结构中的 dwEventFlags 为 0 和按钮的比特位从 1 变为 0 得知。函数 [**GetNumberOfConsoleMouseButtons**](https://docs.microsoft.com/en-us/windows/console/getnumberofconsolemousebuttons) 会检索鼠标的按键个数。
+[**MOUSE_EVENT_RECORD**](https://docs.microsoft.com/en-us/windows/console/mouse-event-record-str) 结构的 **dwButtonState** 成员有一比特对应于每次的鼠标按钮。如果按键按下，这一比特为 1，否则为 0。按键释放事件可由 **MOUSE_EVENT_RECORD** 结构中的 **dwEventFlags** 为 0 和按钮的比特位从 1 变为 0 得知。函数 [**GetNumberOfConsoleMouseButtons**](https://docs.microsoft.com/en-us/windows/console/getnumberofconsolemousebuttons) 会检索鼠标的按键个数。
 
 ### 缓冲区大小改变事件
 
-控制台窗口的菜单允许用户改变活跃屏幕缓冲区的大小；这个改变会生成缓冲区大小改变事件。如果控制台的输入模式被设置为 ENABLE_WINDOW_INPUT，该事件会被放进输入缓冲区。（也就是说，默认模式被仅用）
+控制台窗口的菜单允许用户改变活跃屏幕缓冲区的大小；这个改变会生成缓冲区大小改变事件。如果控制台的输入模式被设置为 **ENABLE_WINDOW_INPUT**，该事件会被放进输入缓冲区。（也就是说，默认模式被禁用）
 
-如果输入事件是缓冲区大小改变事件，[**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 结构的 Event 成员会包含 [**WINDOW_BUFFER_SIZE_RECORD**](https://docs.microsoft.com/en-us/windows/console/window-buffer-size-record-str) 结构，其中包含着控制台屏幕缓冲区的新大小，以字符单元的行数和列数表示。
+如果输入事件是缓冲区大小改变事件，[**INPUT_RECORD**](https://docs.microsoft.com/en-us/windows/console/input-record-str) 结构的 **Event** 成员会包含 [**WINDOW_BUFFER_SIZE_RECORD**](https://docs.microsoft.com/en-us/windows/console/window-buffer-size-record-str) 结构，其中包含着控制台屏幕缓冲区的新大小，以字符单元的行数和列数表示。
 
 如果用户减少了控制台屏幕缓冲区的大小，位于减小区域内的数据会丢失。
 
@@ -232,21 +224,21 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 系统在创建新的控制台时会为它创建屏幕缓冲区。要打开控制台的活跃屏幕缓冲区，需要在对 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 的调用中指定 `CONOUT$` 值。进程可以使用 [**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 来为它的控制台创建另外的屏幕缓冲区。新的屏幕缓冲区不是活跃的，除非使用 [**SetConsoleActiveScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/setconsoleactivescreenbuffer) 函数调用进行指定。然而，无论是否活跃，屏幕缓冲区都可以进行读写访问。
 
-每个屏幕缓冲区都有它自己的字符信息记录的二位数组。每个字符的数据存储在[**CHAR_INFO**](https://docs.microsoft.com/en-us/windows/console/char-info-str) 结构中，该结构指定了字符是 Unicode 还是 ANSI，以及显示字符的前景（foreground）和背景颜色。
+每个屏幕缓冲区都有它自己的字符信息记录的二维数组。每个字符的数据存储在 [**CHAR_INFO**](https://docs.microsoft.com/en-us/windows/console/char-info-str) 结构中，该结构指定了字符是 Unicode 还是 ANSI，以及显示字符的前景颜色（字的颜色）（foreground）和背景颜色。
 
 一些与屏幕缓冲区联系的性质可以为每个屏幕缓冲区单独设置。这意味着对活跃屏幕缓冲区的改变可以对控制台窗口的显示产生相当大的影响。与屏幕缓冲区关联的性质包括：
 
 - 屏幕缓冲区大小，以字符行数和列数给出
 
-- 文本属性（将由[**WriteFile**](https://msdn.microsoft.com/library/windows/desktop/aa365747) 或 [**WriteConsole**](https://docs.microsoft.com/en-us/windows/console/writeconsole) 函数写入的文本的前景和和背景颜色）
+- 文本属性（将由 [**WriteFile**](https://msdn.microsoft.com/library/windows/desktop/aa365747) 或 [**WriteConsole**](https://docs.microsoft.com/en-us/windows/console/writeconsole) 函数写入的文本的前景和和背景颜色）
 
 - 窗口大小和位置（在控制台窗口中显示的控制台屏幕缓冲区的矩形区域）
 
 - 光标的位置、外观和可见性
 
-- 输出模式（ENABLE\_PROCESSED\_OUTPUT 和 ENABLE\_WRAP\_AT\_EOL\_OUTPUT），更多信息可见于 [High-Level Console Modes](https://docs.microsoft.com/en-us/windows/console/high-level-console-modes) 
+- 输出模式（**ENABLE\_PROCESSED\_OUTPUT** 和 **ENABLE\_WRAP\_AT\_EOL\_OUTPUT**），更多信息可见于 [High-Level Console Modes](https://docs.microsoft.com/en-us/windows/console/high-level-console-modes) 
 
-当屏幕缓冲区被创建时，它会包含空格。它的光标是可见的，并位于缓冲区原点 (0, 0)，窗口的左上角在缓冲区的原点。控制台屏幕缓冲区的大小，窗口大小，文本属性和光标外观取决于用户和系统默认。若要检索当前与控制台缓冲区关联的属性值，可以使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo)， [**GetConsoleCursorInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolecursorinfo) 和 [**GetConsoleMode**](https://docs.microsoft.com/en-us/windows/console/getconsolemode) 函数。
+当屏幕缓冲区被创建时，它是空白的。它的光标是可见的，并位于缓冲区原点 (0, 0)，窗口的左上角在缓冲区的原点。控制台屏幕缓冲区的大小，窗口大小，文本属性和光标外观取决于用户和系统默认。若要检索当前与控制台缓冲区关联的属性值，可以使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo)， [**GetConsoleCursorInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolecursorinfo) 和 [**GetConsoleMode**](https://docs.microsoft.com/en-us/windows/console/getconsolemode) 函数。
 
 对控制台屏幕缓冲区属性做出任何修改的应用，要么创建它们自己的屏幕缓冲区，要么保存它一开始时继承的缓冲区状态，并在退出时进行恢复。
 
@@ -254,13 +246,13 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 屏幕缓冲区的光标可以是可见的或隐藏的。当它可见时，它的外观可以在完全填满一个字符格的矩形到在字符格底的水平线之间变动。若要检索光标的可见性和外观信息，可以使用 [**GetConsoleCursorInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolecursorinfo) 函数。该函数会报告光标的可见性，以光标填充字符格的百分比描述光标外观。要设置光标的外观和可见性，可以使用 [**SetConsoleCursorInfo**](https://docs.microsoft.com/en-us/windows/console/setconsolecursorinfo) 函数。
 
-使用高级控制台 I/O 函数写入的字符会在当前光标位置进行写入，并将光标向后移动一格。若想要得到光标在屏幕缓冲区坐标系统中的当前位置，可以使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 。你可以使用 [**SetConsoleCursorPosition**](https://docs.microsoft.com/en-us/windows/console/setconsolecursorposition) 来设置光标位置，来控制高级函数的文本写入和放置位置。如果你移动了光标，新光标位置的文本会被覆盖。
+使用高级控制台 I/O 函数写入的字符会在当前光标位置进行写入，并将光标向后移动一格。若想要得到光标在屏幕缓冲区坐标系统中的当前位置，可以使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 。你可以使用 [**SetConsoleCursorPosition**](https://docs.microsoft.com/en-us/windows/console/setconsolecursorposition) 来设置光标位置，来控制高级函数的文本写入和放置位置。如果你移动了光标，光标新位置的文本会被覆盖。
 
 位置，外观和光标的可见性是为每个屏幕缓冲区独立设置的。
 
 ### 字符属性
 
-字符属性可以分为两类：颜色和 DBCS。下面的属性在 Wincon.h 头文件中定义：
+字符属性可以分为两类：颜色和 DBCS（多字节码）。下面的属性在 Wincon.h 头文件中定义：
 
 - FOREGROUND\_BLUE：文本颜色包含蓝色
 
@@ -278,23 +270,23 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 - BACKGROUND_INTENSITY：背景颜色被增强
 
-- COMMON_LVB_LEADING_BYTE：Leading byte.
+- COMMON_LVB_LEADING_BYTE：多字节码的 Leading byte
 
-- COMMON_LVB_TRAILING_BYTE：Trailing byte.
+- COMMON_LVB_TRAILING_BYTE：多字节码的 Trailing byte
 
-- COMMON_LVB_GRID_HORIZONTAL：Top horizontal.
+- COMMON_LVB_GRID_HORIZONTAL：顶部水平网格
 
-- COMMON_LVB_GRID_LVERTICAL：Left vertical.
+- COMMON_LVB_GRID_LVERTICAL：左竖直网格
 
-- COMMON_LVB_GRID_RVERTICAL：Right vertical.
+- COMMON_LVB_GRID_RVERTICAL：右竖直网格
 
-- COMMON_LVB_REVERSE_VIDEO：Reverse foreground and background attributes.
+- COMMON_LVB_REVERSE_VIDEO：前景背景色反转
 
-- COMMON_LVB_UNDERSCORE：Underscore.
+- COMMON_LVB_UNDERSCORE：下划线
 
-前景属性指文本颜色。背景属性指填充背景的颜色。其他的属性与 [DBCS](https://msdn.microsoft.com/library/windows/desktop/dd317794) 使用。
+前景属性指文本颜色。背景属性指填充背景的颜色。其他的属性和 [DBCS](https://msdn.microsoft.com/library/windows/desktop/dd317794) 使用。
 
-应用可以将前景和背景常数组合在一起来实现不同的颜色。例如，下面的组合会得到蓝色背景上的亮青色文本：
+应用程序可以将前景和背景常数组合在一起来实现不同的颜色。例如，下面的组合会得到蓝色背景上的亮青色文本：
 
 `FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY | BACKGROUND_BLUE` 
 
@@ -304,7 +296,7 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 每个屏幕缓冲区的字符格会存储用于绘制该格的前景（文本）和背景的颜色属性。应用可以为每一个格子设置它自己的颜色数据，将数据存储在每个格子中的 [**CHAR_INFO**](https://docs.microsoft.com/en-us/windows/console/char-info-str) 结构的 Attributes 成员。每个屏幕缓冲区的当前文本属性被用于随后高级函数的字符写入和回显。
 
-应用可以使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 来确定屏幕缓冲区的当前文本属性，使用 [**SetConsoleTextAttribute**](https://docs.microsoft.com/en-us/windows/console/setconsoletextattribute) 来设置文本属性。对文本缓冲区属性的改变不会影响到之前写入的字符显示。这些文本属性不会影响由低级控制台 I/O 函数写入的字符（比如 [**WriteConsoleOutput**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutput) 或 [**WriteConsoleOutputCharacter**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutputcharacter) 函数），它们要么显式指定被写入每个格子的属性或对属性不做改变。
+应用可以使用 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 来确定屏幕缓冲区的当前文本属性，使用 [**SetConsoleTextAttribute**](https://docs.microsoft.com/en-us/windows/console/setconsoletextattribute) 来设置文本属性。对文本缓冲区属性的改变不会影响到之前写入的字符显示。这些文本属性不会影响由低级控制台 I/O 函数写入的字符（比如 [**WriteConsoleOutput**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutput) 或 [**WriteConsoleOutputCharacter**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutputcharacter) 函数），它们要么显式指定被写入每个格子的属性，要么对属性不做改变。
 
 ### 字体属性
 
@@ -326,7 +318,7 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 - 在当前屏幕缓冲区给定下的最大窗口尺寸，当前字体尺寸，屏幕尺寸
 
-函数 [**GetLargestConsoleWindowSize**](https://docs.microsoft.com/en-us/windows/console/getlargestconsolewindowsize) 返回依据当前字体和屏幕尺寸所得到的控制台窗口的最大尺寸。这个尺寸与 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 所返回的最大窗口尺寸不同，因为[**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 中屏幕缓冲区尺寸被忽略了。
+函数 [**GetLargestConsoleWindowSize**](https://docs.microsoft.com/en-us/windows/console/getlargestconsolewindowsize) 返回依据当前字体和屏幕尺寸所得到的控制台窗口的最大尺寸。这个尺寸与 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 所返回的最大窗口尺寸不同，因为 [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo) 中屏幕缓冲区尺寸被忽略了。
 
 要改变屏幕缓冲区的尺寸，使用 [**SetConsoleScreenBufferSize**](https://docs.microsoft.com/en-us/windows/console/setconsolescreenbuffersize) 函数。如果指定的尺寸比对应的控制台窗口要小，这个函数调用会失败。
 
@@ -338,13 +330,11 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 辅助功能（accessibility）应用需要用户对控制台的选择信息。要检索当前选择的控制台，调用 [**GetConsoleSelectionInfo**](https://docs.microsoft.com/en-us/windows/console/getconsoleselectioninfo) 函数，[**CONSOLE_SELECTION_INFO**](https://docs.microsoft.com/en-us/windows/console/console-selection-info-str) 结构中包含选择信息，例如锚点，坐标和状态。
 
-
-
 # Windows 中的控制台应用
 
 ## 什么是控制台应用
 
-控制台应用，也叫字符模式（character mode）应用，是指通过“控制台”（或者叫“终端”）与用户端进行沟通的应用程序。控制台从键盘、鼠标、触摸板、笔等设备转换用户输入，并将其发送到控制台应用的标准输入流（stdin）。控制台也可以将控制台应用的输出显示在用户的屏幕上。
+控制台应用，也叫字符模式（character mode）应用，是指通过“控制台”（或者叫“终端”）与用户端进行沟通的应用程序。**控制台**从键盘、鼠标、触摸板、笔等设备转换用户输入，并将其发送到**控制台应用**的标准输入流（stdin）。控制台也可以将控制台应用的输出显示在用户的屏幕上。
 
 在 Windows 中，控制台是系统内置的，系统提供了一系列的 API 以供控制台应用与用户进行交互。
 
@@ -362,19 +352,32 @@ shell 指的是一个界面，而不局限于命令行。从上述内容来看�
 
 应用可以使用文件 I/O 函数 [**ReadFile**](https://msdn.microsoft.com/library/windows/desktop/aa365467) 和 [**WriteFile**](https://msdn.microsoft.com/library/windows/desktop/aa365747)，控制台函数 [**ReadConsole**](https://docs.microsoft.com/en-us/windows/console/readconsole) 和 [**WriteConsole**](https://docs.microsoft.com/en-us/windows/console/writeconsole)，来进行高层 I/O。高级输入函数会对控制台缓冲区中的输入进行过滤和处理，将输入作为字符流返回，丢弃鼠标信息和缓冲区大小调整信息。类似地，高级输出函数将一个字符流写入屏幕缓冲区中光标当前位置。通过设置控制台 I/O 模式可以控制这些函数的行为。
 
-低级 I/O 函数提供了之间访问控制台输入缓冲和屏幕缓冲的函数，让应用能够访问鼠标和缓冲区大小调整信息，以及键盘事件的扩展信息。低级 I/O 函数让应用能够从屏幕缓冲区读入或写入指定数量的连续字符块，或是在屏幕缓冲区的特定区间内读入或写入矩形字符块。控制台的输入模式通过指定是否处理鼠标和缓冲区大小调整消息来影响低级 I/O。控制台的输出模式对低级输出没有影响。
+低级 I/O 函数提供了之间访问控制台输入缓冲和屏幕缓冲的函数，让应用能够访问鼠标事件和缓冲区大小调整事件，以及键盘事件的扩展信息。低级 I/O 函数让应用能够从屏幕缓冲区读入或写入指定数量的连续字符块，或是在屏幕缓冲区的特定区间内读入或写入矩形字符块。控制台的输入模式通过指定是否处理鼠标和缓冲区大小调整消息来影响低级 I/O。控制台的输出模式对低级输出没有影响。
 
 高级和低级 I/O 方法不是互斥的，应用可以同时对其进行使用。不过一般而言，应用只会使用一种方法。
 
-## 控制台的代码页
+下面的标题中的内容描述了控制台模式和高级低级 I/O 函数。
+
+- [Console Modes](https://docs.microsoft.com/en-us/windows/console/console-modes)
+- [High-Level Console I/O](https://docs.microsoft.com/en-us/windows/console/high-level-console-i-o)
+- [High-Level Console Modes](https://docs.microsoft.com/en-us/windows/console/high-level-console-modes)
+- [High-Level Console Input and Output Functions](https://docs.microsoft.com/en-us/windows/console/high-level-console-input-and-output-functions)
+- [Low-Level Console I/O](https://docs.microsoft.com/en-us/windows/console/low-level-console-i-o)
+- [Low-Level Console Modes](https://docs.microsoft.com/en-us/windows/console/low-level-console-modes)
+- [Low-Level Console Input Functions](https://docs.microsoft.com/en-us/windows/console/low-level-console-input-functions)
+- [Low-Level Console Output Functions](https://docs.microsoft.com/en-us/windows/console/low-level-console-output-functions)
+
+## 控制台代码页
 
 **代码页**是一个由 256 个字符值到字符的映射。不同的代码也包含不同的特殊字符，特殊字符通常是一种或一组语言自定义的。
 
-与控制台联系的有两个代码页：分别用于输入和输出。控制台使用输入代码页将从键盘输入的字符翻译为相应的字符值，它使用输出代码页将由输出函数写入的字符值翻译为在控制台窗口中显示的字符图像。应用程序可使用 [**SetConsoleCP**](https://docs.microsoft.com/en-us/windows/console/setconsolecp) 和 [**GetConsoleCP**](https://docs.microsoft.com/en-us/windows/console/getconsolecp) 函数来设置和检索控制台的输入代码页，使用[**SetConsoleOutputCP**](https://docs.microsoft.com/en-us/windows/console/setconsoleoutputcp) and [**GetConsoleOutputCP**](https://docs.microsoft.com/en-us/windows/console/getconsoleoutputcp) 来设置和检索输出代码页。
+与控制台联系的有两个代码页：分别用于输入和输出。控制台使用输入代码页将从键盘输入的字符翻译为相应的字符值，它使用输出代码页将由输出函数写入的字符值翻译为在控制台窗口中显示的字符图像。应用程序可使用 [**SetConsoleCP**](https://docs.microsoft.com/en-us/windows/console/setconsolecp) 和 [**GetConsoleCP**](https://docs.microsoft.com/en-us/windows/console/getconsolecp) 函数来设置和检索控制台的输入代码页，使用 [**SetConsoleOutputCP**](https://docs.microsoft.com/en-us/windows/console/setconsoleoutputcp) and [**GetConsoleOutputCP**](https://docs.microsoft.com/en-us/windows/console/getconsoleoutputcp) 来设置和检索输出代码页。
 
 ## 控制台的控制处理程序
 
-每个控制台进程都有拥有自己的控制处理函数表，它们在进程接收到 [CTRL+C](https://docs.microsoft.com/en-us/windows/console/ctrl-c-and-ctrl-break-signals), [CTRL+BREAK](https://docs.microsoft.com/en-us/windows/console/ctrl-c-and-ctrl-break-signals)，或 [CTRL+CLOSE](https://docs.microsoft.com/en-us/windows/console/ctrl-close-signal) 信号时会被系统调用。初始条件下，每个进程的控制处理表只包含一个默认处理函数，那就是 [**ExitProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682658) 。通过调用[**SetConsoleCtrlHandler**](https://docs.microsoft.com/en-us/windows/console/setconsolectrlhandler) 函数，控制台进程可以添加或去除额外的处理函数（[**HandlerRoutine**](https://docs.microsoft.com/en-us/windows/console/handlerroutine)），该函数不会影响其他进程的控制处理表。当控制台进程接收到任何控制信号时，它会根据后注册先调用（last-registered，first-called）的规则对处理函数进行调用，直到一个处理函数返回 TRUE 为止。如果没有处理函数返回 TRUE，默认处理函数会被调用。
+每个控制台进程都有拥有自己的控制处理函数表，它们在进程接收到 [CTRL+C](https://docs.microsoft.com/en-us/windows/console/ctrl-c-and-ctrl-break-signals)，[CTRL+BREAK](https://docs.microsoft.com/en-us/windows/console/ctrl-c-and-ctrl-break-signals)，或 [CTRL+CLOSE](https://docs.microsoft.com/en-us/windows/console/ctrl-close-signal) 信号时会被系统调用。初始条件下，每个进程的控制处理表只包含一个默认处理函数，那就是 [**ExitProcess**](https://msdn.microsoft.com/library/windows/desktop/ms682658) 。通过调用 [**SetConsoleCtrlHandler**](https://docs.microsoft.com/en-us/windows/console/setconsolectrlhandler) 函数，控制台进程可以添加或去除额外的处理函数（[**HandlerRoutine**](https://docs.microsoft.com/en-us/windows/console/handlerroutine)），该函数不会影响其他进程的控制处理表。当控制台进程接收到任何控制信号时，它会根据后注册先调用（last-registered，first-called）的规则对处理函数进行调用，直到一个处理函数返回 TRUE 为止。如果没有处理函数返回 TRUE，默认处理函数会被调用。
+
+处理函数的 *dwCtrlType* 参数指明接收到的控制信号，它的返回值表明信号是否被处理了。
 
 ## 控制台缓冲区安全属性和访问权
 
@@ -383,6 +386,174 @@ Windows 安全模式允许你控制对控制台输入缓冲区和输出缓冲区
 当你调用[**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858) 或 [**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 函数时，你可以为你的控制台输入输出缓冲区指定一个安全描述符（[security descriptor](https://msdn.microsoft.com/library/windows/desktop/aa379563)）。如果你使用 NULL，对象会得到默认安全描述符。
 
 由 [**CreateFile**](https://msdn.microsoft.com/library/windows/desktop/aa363858)，[**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer) 和 [**GetStdHandle**](https://docs.microsoft.com/en-us/windows/console/getstdhandle) 返回的句柄有 GENERIC\_READ 和 GENERIC\_WRITE 的访问权力。
+
+# Windows 控制台 API
+
+参考微软官方文档的 [console-functions](https://docs.microsoft.com/en-us/windows/console/console-functions) 页面可以看到，微软划定的控制台 API 一共有 66 个。除去 9 个，还有 57 个。其中的 API 大致可以分为下面这 3 类。
+
+## 程序对控制台简单操作
+
+这一部分 API 指程序对控制台的创建，销毁，附加和取消附加操作，它包括：
+
+- [**AllocConsole**](https://docs.microsoft.com/en-us/windows/console/allocconsole)，为调用该函数的进程分配一个新的控制台
+
+- [**AttachConsole**](https://docs.microsoft.com/en-us/windows/console/attachconsole)，将调用该函数的进程附加到指定进程的控制台
+
+- [**FreeConsole**](https://docs.microsoft.com/en-us/windows/console/freeconsole)，将调用该函数的进程从它的控制台分离
+
+## 控制台属性的获取和修改（getter/setter）
+
+这一部分 API 主要是对控制台本身属性的获取和设置，而与控制台的缓冲区操作没有太大的关系，但是某些 API 不可避免地需要缓冲区句柄来作为参数。
+
+控制台窗口句柄
+
+- [**GetConsoleWindow**](https://docs.microsoft.com/en-us/windows/console/getconsolewindow)，检索调用该函数进程关联的控制台的窗口句柄
+
+控制台窗口标题操作
+
+- [**GetConsoleOriginalTitle**](https://docs.microsoft.com/en-us/windows/console/getconsoleoriginaltitle)，检索当前控制台窗口的原始标题
+
+- [**GetConsoleTitle**](https://docs.microsoft.com/en-us/windows/console/getconsoletitle)，检索当前控制台窗口的标题
+
+- [**SetConsoleTitle**](https://docs.microsoft.com/en-us/windows/console/setconsoletitle)，设置当前控制台窗口的标题
+
+当前控制台的显示模式
+
+- [**GetConsoleDisplayMode**](https://docs.microsoft.com/en-us/windows/console/getconsoledisplaymode)，检索当前控制台的显示模式
+
+- [**SetConsoleDisplayMode**](https://docs.microsoft.com/en-us/windows/console/setconsoledisplaymode)，设置当前控制台的显示模式
+
+控制台的历史设置
+
+- [**GetConsoleHistoryInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolehistoryinfo)，检索调用该函数的控制台的历史设置
+
+- [**SetConsoleHistoryInfo**](https://docs.microsoft.com/en-us/windows/console/setconsolehistoryinfo)，设置调用该函数进程的控制台的历史设置
+
+输入输出代码页
+
+- [**GetConsoleCP**](https://docs.microsoft.com/en-us/windows/console/getconsolecp)，获取与调用该函数进程关联的控制台的输入代码页
+
+- [**SetConsoleCP**](https://docs.microsoft.com/en-us/windows/console/setconsolecp)，设置与调用该函数进程关联的控制台的输入代码页
+
+- [**GetConsoleOutputCP**](https://docs.microsoft.com/en-us/windows/console/getconsoleoutputcp)，获取与调用该函数进程相关联的控制台的输出代码页
+
+- [**SetConsoleOutputCP**](https://docs.microsoft.com/en-us/windows/console/setconsoleoutputcp)，设置与调用该函数进程相关联的控制台的输出代码页
+
+鼠标按键个数
+
+- [**GetNumberOfConsoleMouseButtons**](https://docs.microsoft.com/en-us/windows/console/getnumberofconsolemousebuttons)，获取被当前控制台使用的鼠标的按键个数
+
+选择信息
+
+- [**GetConsoleSelectionInfo**](https://docs.microsoft.com/en-us/windows/console/getconsoleselectioninfo)，检索当前控制台的选择信息
+
+活跃缓冲区
+
+- [**SetConsoleActiveScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/setconsoleactivescreenbuffer)，将指定的屏幕缓冲区设置为当前显示的控制台屏幕缓冲区
+
+事件处理
+
+- [**GenerateConsoleCtrlEvent**](https://docs.microsoft.com/en-us/windows/console/generateconsolectrlevent)，将指定的信号发送给和调用该函数进程共享控制台的进程组
+
+- [**GetConsoleProcessList**](https://docs.microsoft.com/en-us/windows/console/getconsoleprocesslist)，检索附加到当前控制台的进程
+
+- [**HandlerRoutine**](https://docs.microsoft.com/en-us/windows/console/handlerroutine)，应用程序定义的函数，和 [**SetConsoleCtrlHandler**](https://docs.microsoft.com/en-us/windows/console/setconsolectrlhandler) 函数一起使用
+
+- [**SetConsoleCtrlHandler**](https://docs.microsoft.com/en-us/windows/console/setconsolectrlhandler)，从进程的处理函数表中添加或去除应用程序定义的 [**HandlerRoutine**](https://docs.microsoft.com/en-us/windows/console/handlerroutine)
+
+- [**GetNumberOfConsoleInputEvents**](https://docs.microsoft.com/en-us/windows/console/getnumberofconsoleinputevents)，检索在控制台输入缓冲区中为读取的输入记录个数
+
+## 控制台缓冲区和 I/O
+
+这部分 API 主要是对缓冲区和 I/O 进行操作的函数，缓冲区操作包括缓冲区属性的获取和设置，I/O 操作包括了高级和低级 I/O 函数。
+
+缓冲区模式
+
+- [**GetConsoleMode**](https://docs.microsoft.com/en-us/windows/console/getconsolemode)，检索控制台输入缓冲区的当前输入模式，和屏幕缓冲区的当前输出模式
+
+- [**SetConsoleMode**](https://docs.microsoft.com/en-us/windows/console/setconsolemode)，设置控制台输入缓冲区的输入模式，和屏幕缓冲区的输出模式
+
+缓冲区信息
+
+- [**GetConsoleScreenBufferInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfo)，检索关于指定控制台屏幕缓冲区的信息
+
+- [**GetConsoleScreenBufferInfoEx**](https://docs.microsoft.com/en-us/windows/console/getconsolescreenbufferinfoex)，检索关于指定控制台屏幕缓冲区的拓展信息
+
+- [**SetConsoleScreenBufferInfoEx**](https://docs.microsoft.com/en-us/windows/console/setconsolescreenbufferinfoex)，设置指定控制台屏幕缓冲区的拓展信息
+
+缓冲区窗口
+
+- [**SetConsoleWindowInfo**](https://docs.microsoft.com/en-us/windows/console/setconsolewindowinfo)，设置当前控制台屏幕缓冲区窗口的大小
+
+- [**GetLargestConsoleWindowSize**](https://docs.microsoft.com/en-us/windows/console/getlargestconsolewindowsize)，获取最大的控制台窗口的大小
+
+缓冲区基本操作
+
+- [**CreateConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/createconsolescreenbuffer)，创建一个控制台屏幕缓冲区
+
+- [**SetConsoleScreenBufferSize**](https://docs.microsoft.com/en-us/windows/console/setconsolescreenbuffersize)，改变指定控制台屏幕缓冲区的大小
+
+- [**ScrollConsoleScreenBuffer**](https://docs.microsoft.com/en-us/windows/console/scrollconsolescreenbuffer)，在屏幕缓冲区中移动一个数据块
+
+- [**FillConsoleOutputAttribute**](https://docs.microsoft.com/en-us/windows/console/fillconsoleoutputattribute)，为指定数量的字符格子设置文字个背景颜色属性
+
+- [**FillConsoleOutputCharacter**](https://docs.microsoft.com/en-us/windows/console/fillconsoleoutputcharacter)，在控制台屏幕缓冲区写入一定数量的一个字符
+
+- [**FlushConsoleInputBuffer**](https://docs.microsoft.com/en-us/windows/console/flushconsoleinputbuffer)，刷新控制台输入缓冲区
+
+前景背景
+
+- [**SetConsoleTextAttribute**](https://docs.microsoft.com/en-us/windows/console/setconsoletextattribute)，设置写入控制台屏幕缓冲区的字符的文本和背景颜色属性
+
+光标
+
+- [**SetConsoleCursorPosition**](https://docs.microsoft.com/en-us/windows/console/setconsolecursorposition)，设置指定控制台屏幕缓冲区的光标位置
+
+- [**GetConsoleCursorInfo**](https://docs.microsoft.com/en-us/windows/console/getconsolecursorinfo)，检索关于指定的控制台屏幕缓冲区的光标的大小和可见性
+
+- [**SetConsoleCursorInfo**](https://docs.microsoft.com/en-us/windows/console/setconsolecursorinfo)，设置指定控制台屏幕缓冲区的光标的大小和可见性
+
+字体
+
+- [**GetCurrentConsoleFontEx**](https://docs.microsoft.com/en-us/windows/console/getcurrentconsolefontex)，获取当前控制台字体的拓展信息
+
+- [**SetCurrentConsoleFontEx**](https://docs.microsoft.com/en-us/windows/console/setcurrentconsolefontex)，设置当前控制台字体的拓展信息
+
+- [**GetConsoleFontSize**](https://docs.microsoft.com/en-us/windows/console/getconsolefontsize)，检索指定控制台屏幕缓冲区的字体大小
+
+- [**GetCurrentConsoleFont**](https://docs.microsoft.com/en-us/windows/console/getcurrentconsolefont)，检索当前控制台的字体
+
+标准句柄
+
+- [**GetStdHandle**](https://docs.microsoft.com/en-us/windows/console/getstdhandle)，检索标准输入、输出、错误设备的句柄
+
+- [**SetStdHandle**](https://docs.microsoft.com/en-us/windows/console/setstdhandle)，对标准输入、输出、错误设备的句柄进行设置
+
+高级 I/O 函数
+
+- [**ReadConsole**](https://docs.microsoft.com/en-us/windows/console/readconsole)，从指定控制台输入缓冲区中读入字符输入，并将其从缓冲区中移除
+
+- [**WriteConsole**](https://docs.microsoft.com/en-us/windows/console/writeconsole)，将字符串写入到控制台的屏幕缓冲区，写入的起点是当前光标位置
+
+低级 I/O 函数
+
+- [**PeekConsoleInput**](https://docs.microsoft.com/en-us/windows/console/peekconsoleinput)，从指定控制台输入缓冲区读入数据，并且不将它从缓冲区中移除
+
+- [**ReadConsoleInput**](https://docs.microsoft.com/en-us/windows/console/readconsoleinput)，从指定缓冲区中读入数据，并将其从缓冲区中移除
+
+- [**ReadConsoleOutput**](https://docs.microsoft.com/en-us/windows/console/readconsoleoutput)，从控制台屏幕缓冲区的一个矩形块中读取字符和颜色属性数据
+
+- [**ReadConsoleOutputAttribute**](https://docs.microsoft.com/en-us/windows/console/readconsoleoutputattribute)，从连续的控制台屏幕缓冲区格子中拷贝指定数量的前景背景颜色属性
+
+- [**ReadConsoleOutputCharacter**](https://docs.microsoft.com/en-us/windows/console/readconsoleoutputcharacter)，从连续的控制台屏幕缓冲格子中拷贝一定数量的字符
+
+- [**WriteConsoleInput**](https://docs.microsoft.com/en-us/windows/console/writeconsoleinput)，将数据直接写入控制台输入缓冲区
+
+- [**WriteConsoleOutput**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutput)，将字符和颜色属性数据写入到控制台屏幕缓冲区的指定矩形块中
+
+- [**WriteConsoleOutputAttribute**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutputattribute)，将一定数量的前景背景颜色属性拷贝到连续的控制台屏幕缓冲区中
+
+- [**WriteConsoleOutputCharacter**](https://docs.microsoft.com/en-us/windows/console/writeconsoleoutputcharacter)，将一定数量的字符拷贝到连续的控制台屏幕缓冲区中
 
 # 参考资料
 

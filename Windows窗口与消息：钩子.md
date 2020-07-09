@@ -160,7 +160,7 @@ shell 应用可以使用 **WH\_SHELL** 钩子来检索重要的通知。系统�
 
 # 代码示例
 
-微软的官方文档给出了一个例子，[Using Hooks](https://docs.microsoft.com/en-us/windows/win32/winmsg/using-hooks) 可以参考参考。
+微软的官方文档给出了一个例子，[Using Hooks](https://docs.microsoft.com/en-us/windows/win32/winmsg/using-hooks) 。可以参考参考。
 
 这里给出一个更简单的例子，使用钩子来监视鼠标的点击事件。
 
@@ -182,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         hBrBlack = CreateSolidBrush(RGB(0, 0, 0));
         hBrRed = CreateSolidBrush(RGB(255, 0, 0));
-
+        return 0;
     case WM_SIZE:
         cxSize = LOWORD(lParam);
         cySize = HIWORD(lParam);
@@ -218,7 +218,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             FillRect(hdc, &rect, hBrBlack);
         }
         EndPaint(hWnd, &ps);
-        
+
         return 0;
 
     case WM_DESTROY:
@@ -265,6 +265,186 @@ case WM_LBUTTONDOWN:
 
 使用上面的这两个函数可以很好地解决这个问题，那么，怎么使用钩子来解决问题呢？
 
-## 使用钩子的版本
+## 使用钩子的代码
+
+通过使用钩子，可以检测到所有线程的鼠标消息。需要使用和鼠标消息相关的钩子。
+
+包含钩子过程的 dll 代码如下：
+
+```c
+//mousehook module
+#include <windows.h>
+#include <strsafe.h>
+extern "C" __declspec(dllexport) void SetMouseHook(HWND, HMODULE);
+extern "C" __declspec(dllexport) void ReleaseMouseHook(void);
+
+HHOOK hHook;
+HWND hWnd;
+
+LRESULT CALLBACK MouseProc(int inode, WPARAM wParam, LPARAM lParam)
+{
+    static int cnt = 0;
+    size_t len;
+    TCHAR buff[10];
+    HDC hdc;
+    if (inode == HC_ACTION)
+    {
+        switch (wParam)
+        {
+        case WM_LBUTTONUP:
+            hdc = GetDC(hWnd);
+            StringCbPrintf(buff, 10, TEXT("%d"), cnt);
+            StringCchLength(buff, 10, &len);
+            TextOut(hdc, 0, 15 * cnt++, buff, len);
+            ReleaseDC(hWnd, hdc);
+            SendMessage(hWnd, WM_USER + 1, 0, 0);
+
+        }
+    }
+    return CallNextHookEx(hHook, inode, wParam, lParam);
+}
+
+void SetMouseHook(HWND hwnd, HMODULE hModule)
+{
+    hHook = SetWindowsHookEx(WH_MOUSE_LL, MouseProc, hModule, 0);
+    hWnd = hwnd;
+}
+
+void ReleaseMouseHook(void)
+{
+    UnhookWindowsHookEx(hHook);
+    hHook = 0;
+    hWnd = 0;
+}
+```
+
+该 DLL 导出了两个函数，`SetMouseHook` 负责安装钩子，`ReleaseMouseHook` 负责释放钩子。
+
+当安装了钩子之后，当鼠标左键释放后，钩子过程会在窗口上输出左键释放的次数，以及向窗口发送 `WM_USER + 1` 的消息。
+
+窗口处理过程如下：
+
+```c
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    static HMODULE hModule;
+    typedef void (*ahook)(HWND, HMODULE);
+    typedef void (*afree)(void);
+    static ahook AddHook;
+    static afree DelHook;
+    static BOOL fHooked = FALSE;
+    static BOOL fClicked = FALSE;
+    static int cxSize, cySize;
+    static HBRUSH hBrBlack, hBrRed;
+    PAINTSTRUCT ps;
+    HDC hdc;
+    RECT rect;
+    switch (message)
+    {
+    case WM_CREATE:
+        hBrBlack = CreateSolidBrush(RGB(0, 0, 0));
+        hBrRed = CreateSolidBrush(RGB(255, 0, 0));
+        hModule = LoadLibrary(TEXT("mousehook"));
+        if (hModule == NULL)
+            exit(1);
+        AddHook = (ahook)GetProcAddress(hModule, "SetMouseHook");
+        if (!AddHook)
+        {
+            MessageBox(NULL, TEXT("FAILED"), TEXT("2"), MB_OK);
+            exit(1);
+        }
+        DelHook = (afree)GetProcAddress(hModule, "ReleaseMouseHook");
+        if (!DelHook)
+        {
+            MessageBox(NULL, TEXT("FAILED"), TEXT("3"), MB_OK);
+            exit(1);
+        }
+        return 0;
+    case WM_SIZE:
+        cxSize = LOWORD(lParam);
+        cySize = HIWORD(lParam);
+        return 0;
+
+    case WM_LBUTTONDOWN:
+        //draw red rect
+        hdc = GetDC(hWnd);
+        SetRect(&rect, cxSize / 3, cySize / 3, cxSize * 2 / 3, cySize * 2 / 3);
+        FillRect(hdc, &rect, hBrRed);
+        ReleaseDC(hWnd, hdc);
+
+        fClicked = TRUE;
+        if (!fHooked)
+        {
+            AddHook(hWnd, hModule);
+            fHooked = TRUE;
+        }
+        return 0;
+
+    case WM_USER + 1:
+    case WM_LBUTTONUP:
+        //draw black rect
+        hdc = GetDC(hWnd);
+        SetRect(&rect, cxSize / 3, cySize / 3, cxSize * 2 / 3, cySize * 2 / 3);
+        FillRect(hdc, &rect, hBrBlack);
+        ReleaseDC(hWnd, hdc);
+        fClicked = FALSE;
+
+        if (fHooked)
+        {
+            DelHook();
+            fHooked = FALSE;
+        }
+        return 0;
+
+    case WM_PAINT:
+        hdc = BeginPaint(hWnd, &ps);
+        if (fClicked)
+        {
+            SetRect(&rect, cxSize / 3, cySize / 3, cxSize * 2 / 3, cySize * 2 / 3);
+            FillRect(hdc, &rect, hBrRed);
+        }
+        else
+        {
+            SetRect(&rect, cxSize / 3, cySize / 3, cxSize * 2 / 3, cySize * 2 / 3);
+            FillRect(hdc, &rect, hBrBlack);
+        }
+        EndPaint(hWnd, &ps);
+
+        return 0;
+
+    case WM_DESTROY:
+        if (fHooked)
+        {
+            DelHook();
+        }
+        FreeLibrary(hModule);
+        DeleteObject(hBrBlack);
+        DeleteObject(hBrRed);
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    return 0;
+}
+```
+
+这段代码与使用 **SetCapture** 的代码有相同的效果。
+
+注意，这里使用的是 **WH\_MOUSE\_LL** 钩子，而不是 **WH\_MOUSE**。若调用 **SetWindowsHookEx** 时指定的是 **WH\_MOUSE** ，将鼠标移出窗口并松开左键并没有反应，必须再按下松开一次。根据参考资料【3】，**WH\_MOUSE\_LL** 的钩子过程并没有注入其他进程中。消息产生时，上下文会切换到安装钩子的进程并在原始上下文调用钩子过程，随后上下文回到生成时间的应用。而 **WH\_MOUSE** 的钩子过程需要注入。
+
+由此做出猜想：在鼠标移出窗口后松开左键时，若使用的是 **WH\_MOUSE** 钩子，钩子过程可能还没有注入到其他进程中，所以第一次点击没有反应，再次点击时，钩子过程已注入，钩子向原窗口发送消息，从而使得窗口重新绘制矩形。
+
+网上关于这两种钩子区别的内容寥寥无几，参考资料【3】已经是 11 年前的内容了，由于能力不足，这个猜想也只能作为猜想留在这里，待以后再解决。
+
+
+
+# 参考资料
+
+【1】Hooks Overview： https://docs.microsoft.com/en-us/windows/win32/winmsg/about-hooks
+
+【2】*Programming Windows*, Charles Petzold
+
+【3】What are all the differences between WH_MOUSE and WH_MOUSE_LL hooks? - Stack Overflow https://stackoverflow.com/questions/872677/what-are-all-the-differences-between-wh-mouse-and-wh-mouse-ll-hooks
 
 

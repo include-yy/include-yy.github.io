@@ -42,11 +42,13 @@
 
 击键消息的 *wParam* 参数包含着一个被按压或释放的按键的虚拟键码。窗口过程可以根据虚拟键码的值来处理或忽略击键消息。
 
+对于字母键和数字键，它们的虚拟键码就是 ASCII 码。
+
 一般窗口过程只处理少部分的击键消息，它会忽略掉其他剩余的。例如，窗口过程可能只处理 [**WM_KEYDOWN**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-keydown) 击键消息，并且只处理那些光标移动键，shift 键和功能键。一般的窗口过程不会处理来自字符键的击键消息。取而代之的是，它使用 [**TranslateMessage**](https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-translatemessage) 函数将击键消息转化为字符消息。
 
 ## 击键消息标志
 
-击键消息的 *lParam* 参数包含生成消息的击键的额外信息。这个信息包括重复计数（repeat count），扫描码（scan code），拓展键标志（extended-key flag），文本码（context code），之前的键状态标志（previous key-state flag），和过渡状态标志（transition-state flag）。下面的插图展示了这些标志的在 *lParam* 中的位置。
+击键消息的 *lParam* 参数包含生成消息的击键的额外信息。这个信息包括重复计数（repeat count），扫描码（scan code），拓展键标志（extended-key flag），内容码（context code），之前的键状态标志（previous key-state flag），和过渡状态标志（transition-state flag）。下面的插图展示了这些标志的在 *lParam* 中的位置。
 
 <img title="" src="https://docs.microsoft.com/en-us/windows/win32/inputdev/images/csinp-02.png" alt="avater" width="408" data-align="inline">
 
@@ -76,9 +78,9 @@
 
 拓展键标志指明了击键消息是否来自增强键盘上额外的键。拓展键包括：键盘右手边的 ALT 和 CTRL 键；INS，DEL，HOME，END，PAGE UP，PAGE DOWN，数字小键盘中的箭头键；NUM LOCK；BREAK 键；PRINT SCAN 键；以及在数字小键盘上的除号键（/）和 ENTER 键。如果按键是一个拓展键的话，拓展键标志会被设置。
 
-### 文本码
+### 内容码
 
-文本码指明在击键消息生成时是否按下了 ALT 键。如果按下了则文本码为 1，否则为 0。
+内容码指明在击键消息生成时是否按下了 ALT 键。如果按下了则内容码为 1，否则为 0。
 
 ### 先前键状态标志
 
@@ -113,4 +115,58 @@
 5. [**WM_CHAR**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-char)
 6. [**WM_KEYUP**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-keyup)
 
-**TranslateMessage** 会在它处理来自死键的 [**WM_KEYDOWN**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-keydown) 消息时生成 [**WM_DEADCHAR**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-deadchar) 消息。
+**TranslateMessage** 会在它处理来自死键的 [**WM_KEYDOWN**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-keydown) 消息时生成 [**WM_DEADCHAR**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-deadchar) 消息。即使 **WM\_DEADCHAR** 消息的 *wParam* 参数中包含死键的变音符字符码，应用一般会忽略这个消息。取而代之的是，它会处理随后击键生成的 **WM\_CHAR** 消息。**WM\_CHAR** 的 *wParam* 参数包含着含有变音符的字符的字符码。如果随后的击键生成了不能与变音符组合的一个字符，系统会生成两个字符消息。前者的 *wParam* 参数是变音符的字符码；后者的 *wParam* 是随后输入的字符码。
+
+在处理来自系统死键（与 ALT 键组合的死键）[**WM_SYSKEYDOWN**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-syskeydown) 消息时，**TranslateMessage** 会生成 [**WM_SYSDEADCHAR**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-sysdeadchar) 消息。应用一般会忽略掉这个消息。
+
+# 按键状态
+
+当处理键盘消息时，除了当前生成消息的键外，应用可能需要判断其他键的状态。例如，文字处理应用允许用户使用 `SHIFT+END` 来选取一块文本，只要它从 END 键接收到击键消息，就必须检查 SHIFT 键的状态。应用可以使用 [**GetKeyState**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeystate) 函数来判断一个虚拟键在当前消息生成时的状态；它也可以使用[**GetAsyncKeyState**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getasynckeystate) 函数来判断虚拟键的当前状态。（两者的区别在于键盘消息生成时的状态与当前调用函数时的按键状态）
+
+键盘布局维护了一张名字表。产生单个字符的键的名字和它所产生的字符是相同的。像是 TAB 和 ENTER 的非字符键以字符串的形式储存。应用可以调用 [**GetKeyNameTextA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeynametexta) 函数来从设备驱动检索任何键的名字。
+
+# 击键与字符翻译
+
+系统包括了几个翻译由各种击键消息生成的扫描码、字符码和虚拟键码的特殊目的函数。这些函数包括 [**MapVirtualKeyA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mapvirtualkeya)，[**ToAscii**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-toascii)，[**ToUnicode**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-tounicode)，[**VkKeyScanA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-vkkeyscana)。
+
+另外，Microsoft 富文本编辑器 3.0 支持 [HexToUnicode IME](https://docs.microsoft.com/en-us/windows/desktop/Intl/hextounicode-ime)，它允许用户使用热键在十六进制和 Unicode 字符间切换。这意味着当富文本编辑器 3.0 整合到应用中时，应用会继承 HexToUnicode IME 的特性。
+
+# 热键支持
+
+*热键* 是一个生成 [**WM_HOTKEY**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-hotkey) 消息的键组合，系统将它放在线程消息队列的最前面。使用使用热键来从用户处获得高优先级的键盘输入。例如，通过定义 `CTRL + C` 的组合键为热键，应用允许用户取消一个冗长的操作。
+
+要使用热键，应用可以调用 [**RegisterHotKey**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey) 函数，并指定生成热键消息的组合键、接收热键的窗口的句柄，以及热键的标识符。当用户按下热键时，**WM\_HOTKEY** 消息被放在创建了窗口的线程的消息队列中。消息的 *wParam* 包含了热键的标识符。应用可以为一个线程定义多个热键，但线程中的每个热键必须有唯一的标识符。在应用终止前，它应该使用 [**UnregisterHotKey**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-unregisterhotkey) 函数来销毁热键。
+
+用户可以使用热键空间来更容易地选择热键。热键空间一般用于定义激活窗口的热键；它们不使用 [**RegisterHotKey**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey) 和 [**UnregisterHotKey**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-unregisterhotkey) 函数。用使用热键的应用一般会发送 [**WM_SETHOTKEY**](https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-sethotkey) 消息来设置热键。当用户按下热键时，系统会发送指定了 SC\_HOTKEY 的 [**WM_SYSCOMMAND**](https://docs.microsoft.com/en-us/windows/desktop/menurc/wm-syscommand) 消息。关于更多热键控件的消息，可见于[About Hot Key Controls](https://docs.microsoft.com/en-us/windows/win32/controls/hot-key-controls)。
+
+# 模拟输入
+
+想要模拟一系列不间断用户输入事件，可以使用 [**SendInput**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput) 函数。这个函数接受三个参数。第一个参数 *cInputs* 指明将要模拟的输入的数量。第二个参数 *rgInputs* 是一个 [**INPUT**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-input) 结构数组，其中的元素描述了输入事件类型以及额外的事件信息。最后一个参数 *cbSize*，接收 **INPUT** 结构的大小，以字节为单位。
+
+**SendInput** 函数通过注入一系列的模拟输入事件到设备的输入流中来进行工作。它的效果和重复调用 [**keybd\_event**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-keybd_event) 或 [**mouse_event**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-mouse_event) 函数很相似，除了系统确保没有其他输入事件与模拟事件混合在一起之外。调用完成时，返回值指明成功的输入事件个数。如果这个值为 0，则说明输入被阻塞了。
+
+**SendInput** 函数不会重设键盘当前的状态。因此，如果用户在你调用这个函数时按下了任意键，它们可能会与函数生成的事件相互干扰。如果你担心可能的干扰，可是在必要的时候使用 **GetAsyncKeyState** 来检查按键状态。
+
+# 语言，地区和键盘布局
+
+*语言* 指一种自然语言，比如英语，法语和日语。*子语言* 是一种自然语言的一种变种，指特定地理区域使用的语言，比如在英国的英语和美国的英语。应用可以使用叫做语言标识符（[language identifiers](https://docs.microsoft.com/en-us/windows/desktop/Intl/language-identifiers)）的值来唯一地确定语言和子语言。
+
+应用一般使用 *地区*（locale） 来设置语言的输入输出处理。例如，为键盘设置区域会应用想键盘生成的字符值。为显示器或打印机设置区域会影响显示或打印的字形。应用通过载入和使用键盘布局来为键盘设置区域。它们通过选择支持指定区域的字体来为显示器或打印机设置区域。
+
+键盘布局不仅指定了键盘键的物理位置，而且决定了按键的字符值。每个布局标明了当前输入语言并决定了键和键组合所生成的字符值。
+
+每个键盘布局有着对应的句柄，它标识了布局和语言。句柄的低位字是语言标识符。高位字是设备句柄，指定了物理布局，它的值也可以是 0，表示默认物理布局。用户可以将任意输入语言与物理布局关联起来。例如，英语使用者有时要使用法语工作，他可以将键盘的输入语言改为法语，而不需要改变键盘的物理布局。这意味着用户可以使用熟悉的英语键盘布局来输入法语文本。
+
+一般应用不被期望来直接操纵输入语言。由用户来设置语言和布局组合，之后在它们之间选择。当用户选择其他语言标记的文本时，应用调用 [**ActivateKeyboardLayout**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-activatekeyboardlayout) 函数来激活用户对该语言的默认键盘布局。如果用户使用不在激活表中的语言进行编辑的话，应用可以使用 [**LoadKeyboardLayoutA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadkeyboardlayouta) 函数来获得基于该语言的布局。
+
+**ActivateKeyboardLayout** 函数为当前任务设置输入语言。*hkl* 参数可以是键盘布局的句柄或一个 0 值。可以通过 [**LoadKeyboardLayoutA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadkeyboardlayouta) 和 [**GetKeyboardLayoutList**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeyboardlayoutlist) 函数获得键盘布局句柄。 **HKL\_NEXT** 和 **HKL\_PREV** 可以用来选取下一个或上一个键盘。
+
+[**GetKeyboardLayoutNameA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeyboardlayoutnamea) 函数为调用线程检索活跃键盘布局的名字。如果应用使用 [**LoadKeyboardLayoutA**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-loadkeyboardlayouta) 函数创建了活跃键盘布局，**GetKeyboardLayoutName** 会检索与用于创建布局的相同字符串。否则，该字符串是与活跃布局的语言对应的主要语言标识符。这意味着这个函数可能不一定分辨使用相同主要语言的不同布局，因此也不能返回输入语言的特定信息。然而，[**GetKeyboardLayout**](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeyboardlayout) 可用来判断输入语言。
+
+**LoadKeyboardLayout** 函数载入一个键盘布局并使其对用户可用。应用可以使用 **KLF\_ACTIVATE** 来使键盘布局对当前线程立即可用。应用可以使用 **KLF\_REORDER** 来改变布局的排序而不需要指定 **KLF\_ACTIVATE**。应用应该在载入键盘布局并确保用户偏好时使用 **KLF_SUBSTITUTE_OK**。
+
+# 参考资料
+
+【1】About Keyboard Input： https://docs.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input
+
+【2】*Programming Windows*, Charles Petzold

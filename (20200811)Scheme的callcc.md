@@ -565,7 +565,7 @@ CPS，全称 continuation-passing style，中文意思为延续传递风格。
 
 `(k@a k@b)` ，a 的 continuation 是接受一个参数来作为 `a@(call/cc call/cc)` 过程的参数，b 的 continuation 是作为 `a@(call/cc call/cc)` 的参数。进一步变换后得到：
 
-`(a@(call/cc call/cc) k@b)` ，这也就是为什么死循环的原因吧。
+`(k@b k@b)` ，这也就是为什么死循环的原因吧。
 
 ## 阴阳谜题（yin-yang puzzle）
 
